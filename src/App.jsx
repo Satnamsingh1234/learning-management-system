@@ -198,6 +198,7 @@ function App() {
   );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [toast, setToast] = useState("");
 
   useEffect(() => {
     localStorage.setItem("lms-courses", JSON.stringify(courses));
