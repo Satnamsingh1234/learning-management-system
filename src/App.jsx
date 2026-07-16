@@ -196,7 +196,8 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(
     () => localStorage.getItem("lms-logged-in") === "true"
   );
-  const [toast, setToast] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     localStorage.setItem("lms-courses", JSON.stringify(courses));
@@ -291,12 +292,19 @@ function App() {
 
   function handleLogin(event) {
     event.preventDefault();
-    setLoggedIn(true);
-    localStorage.setItem("lms-logged-in", "true");
-    setShowLogin(false);
-    notify("Login successful. Welcome, Satnam!");
+  
+    const validEmail = "student@lms.com";
+    const validPassword = "123456";
+  
+    if (email === validEmail && password === validPassword) {
+      setLoggedIn(true);
+      localStorage.setItem("lms-logged-in", "true");
+      setShowLogin(false);
+      notify("Login successful. Welcome, Satnam!");
+    } else {
+      notify("Invalid Email or Password");
+    }
   }
-
   function resetDemo() {
     setCourses(defaultCourses);
     setAssignments(defaultAssignments);
@@ -811,7 +819,7 @@ function completeLesson() {
                     setActiveLessonIndex((index) => Math.max(index - 1, 0))
                   }
                 >
-                  ← Previous
+                  ← Previous-
                 </button>
 
                 <button
@@ -864,12 +872,24 @@ function completeLesson() {
 
             <label>
               Email address
-              <input type="email" placeholder="student@email.com" required />
+              <input
+  type="email"
+  placeholder="student@lms.com"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  required
+/>
             </label>
 
             <label>
               Password
-              <input type="password" placeholder="Enter password" required />
+              <input
+  type="password"
+  placeholder="Enter password"
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  required
+/>
             </label>
 
             <button type="submit" className="modal-primary-button">
