@@ -579,12 +579,13 @@ function App() {
           <div className="course-grid">
             {filteredCourses.map((course) => (
               <CourseCard
-                key={course.id}
-                course={course}
-                enrolled={enrolledCourses.includes(course.id)}
-                onEnroll={() => enrollCourse(course.id)}
-                onDetails={() => setSelectedCourse(course)}
-              />
+              key={course.id}
+              course={course}
+              enrolled={enrolledCourses.includes(course.id)}
+              onEnroll={() => enrollCourse(course.id)}
+              onLearn={() => openLearning(course.id)}
+              onDetails={() => setSelectedCourse(course)}
+            />
             ))}
           </div>
         </Page>
