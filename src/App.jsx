@@ -198,10 +198,16 @@ function App() {
   const [learningCourseId, setLearningCourseId] = useState(null);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
   const [showLogin, setShowLogin] = useState(false);
+  const [authMode, setAuthMode] = useState("login");
+const [fullName, setFullName] = useState("");
+const [confirmPassword, setConfirmPassword] = useState("");
   const [showCertificate, setShowCertificate] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(
-    () => localStorage.getItem("lms-logged-in") === "true"
-  );
+  const [currentUser, setCurrentUser] = useState(() => {
+    const savedUser = localStorage.getItem("lms-current-user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  
+  const loggedIn = Boolean(currentUser);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [toast, setToast] = useState("");
@@ -296,21 +302,114 @@ function App() {
     );
     notify("Assignment submitted successfully!");
   }
-
   function handleLogin(event) {
     event.preventDefault();
   
-    const validEmail = "student@lms.com";
-    const validPassword = "123456";
+    const registeredUsers =
+      JSON.parse(localStorage.getItem("lms-users")) || [];
   
-    if (email === validEmail && password === validPassword) {
-      setLoggedIn(true);
-      localStorage.setItem("lms-logged-in", "true");
+    const demoUser = {
+      id: 1,
+      name: "Satnam Singh",
+      email: "student@lms.com",
+      password: "123456",
+    };
+  
+    const allUsers = [demoUser, ...registeredUsers];
+  
+    const matchedUser = allUsers.find(
+      (user) =>
+        user.email.toLowerCase() === email.trim().toLowerCase() &&
+        user.password === password
+    );
+  
+    if (matchedUser) {
+      const safeUser = {
+        id: matchedUser.id,
+        name: matchedUser.name,
+        email: matchedUser.email,
+      };
+  
+      setCurrentUser(safeUser);
+      localStorage.setItem("lms-current-user", JSON.stringify(safeUser));
+  
       setShowLogin(false);
-      notify("Login successful. Welcome, Satnam!");
+      setEmail("");
+      setPassword("");
+  
+      notify(`Welcome back, ${safeUser.name}!`);
     } else {
-      notify("Invalid Email or Password");
+      notify("Invalid email or password.");
     }
+  }
+  function handleSignup(event) {
+    event.preventDefault();
+  
+    if (fullName.trim().length < 3) {
+      notify("Please enter your full name.");
+      return;
+    }
+  
+    if (password.length < 6) {
+      notify("Password must contain at least 6 characters.");
+      return;
+    }
+  
+    if (password !== confirmPassword) {
+      notify("Passwords do not match.");
+      return;
+    }
+  
+    const registeredUsers =
+      JSON.parse(localStorage.getItem("lms-users")) || [];
+  
+    const emailAlreadyExists =
+      email.trim().toLowerCase() === "student@lms.com" ||
+      registeredUsers.some(
+        (user) =>
+          user.email.toLowerCase() === email.trim().toLowerCase()
+      );
+  
+    if (emailAlreadyExists) {
+      notify("An account with this email already exists.");
+      return;
+    }
+  
+    const newUser = {
+      id: Date.now(),
+      name: fullName.trim(),
+      email: email.trim().toLowerCase(),
+      password,
+    };
+  
+    const updatedUsers = [...registeredUsers, newUser];
+  
+    localStorage.setItem("lms-users", JSON.stringify(updatedUsers));
+  
+    const safeUser = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+    };
+
+  
+    localStorage.setItem("lms-current-user", JSON.stringify(safeUser));
+    setCurrentUser(safeUser);
+  
+    setShowLogin(false);
+    setFullName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+  
+    notify(`Account created successfully. Welcome, ${newUser.name}!`);
+  }
+  function handleLogout() {
+    localStorage.removeItem("lms-current-user");
+    setCurrentUser(null);
+    setEmail("");
+    setPassword("");
+    notify("Logged out successfully.");
   }
   function resetDemo() {
     setCourses(defaultCourses);
@@ -448,10 +547,16 @@ function App() {
 
           <button
           className="login-button bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          onClick={() => setShowLogin(true)}
-          >
+          onClick={() => {
+            if (loggedIn) {
+              handleLogout();
+            } else {
+              setAuthMode("login");
+              setShowLogin(true);
+            }
+          }}          >
             <FaUser />
-            {loggedIn ? "Satnam" : "Login"}
+            {loggedIn ? currentUser.name : "Login"}
           </button>
         </div>
       </header>
@@ -871,8 +976,11 @@ function completeLesson() {
 
       {showLogin && (
         <div className="modal-overlay">
-          <form className="modal login-modal" onSubmit={handleLogin}>
-            <button
+          <form
+  className="modal login-modal"
+  onSubmit={authMode === "login" ? handleLogin : handleSignup}
+>
+                       <button
               type="button"
               className="close-modal"
               onClick={() => setShowLogin(false)}
@@ -883,9 +991,74 @@ function completeLesson() {
             <span className="modal-icon">
               <FaGraduationCap />
             </span>
-            <h2>Welcome back</h2>
-            <p>Login to continue your learning journey.</p>
+            <h2>
+  {authMode === "login" ? "Welcome back" : "Create your account"}
+</h2>   
+<div className="auth-tabs">
+  <button
+    type="button"
+    className={authMode === "login" ? "active" : ""}
+    onClick={() => setAuthMode("login")}
+  >
+    Login
+  </button>
 
+  <button
+    type="button"
+    className={authMode === "signup" ? "active" : ""}
+    onClick={() => setAuthMode("signup")}
+  >
+    Sign Up
+  </button>
+</div>       
+<p>
+  {authMode === "login"
+    ? "Login to continue your learning journey."
+    : "Sign up and start learning with LearnSphere."}
+</p>
+
+
+<div className="auth-tabs">
+  <button
+    type="button"
+    className={authMode === "login" ? "active" : ""}
+    onClick={() => setAuthMode("login")}
+  >
+    Login
+  </button>
+
+  <button
+    type="button"
+    className={authMode === "signup" ? "active" : ""}
+    onClick={() => setAuthMode("signup")}
+  >
+    Sign Up
+  </button>
+</div>
+{authMode === "signup" && (
+  <label>
+    Full Name
+    <input
+      type="text"
+      placeholder="Enter your full name"
+      value={fullName}
+      onChange={(e) => setFullName(e.target.value)}
+      required
+    />
+  </label>
+)}
+{authMode === "signup" && (
+  <label>
+    Confirm Password
+    <input
+      type="password"
+      placeholder="Confirm password"
+      value={confirmPassword}
+      onChange={(e) => setConfirmPassword(e.target.value)}
+      required
+    />
+  </label>
+)}
             <label>
               Email address
               <input
@@ -911,8 +1084,25 @@ function completeLesson() {
             type="submit"
             className="modal-primary-button bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition"
 >
-              Login to LMS
+{authMode === "login" ? "Login to LMS" : "Create Account"}
             </button>
+            <p className="auth-switch">
+  {authMode === "login" ? (
+    <>
+      Don't have an account?{" "}
+      <span onClick={() => setAuthMode("signup")}>
+        Sign Up
+      </span>
+    </>
+  ) : (
+    <>
+      Already have an account?{" "}
+      <span onClick={() => setAuthMode("login")}>
+        Login
+      </span>
+    </>
+  )}
+</p>
           </form>
         </div>
       )}
