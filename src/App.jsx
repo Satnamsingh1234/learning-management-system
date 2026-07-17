@@ -786,17 +786,22 @@ Learn new skills and
                     <strong>{assignment.points}</strong>
                   </div>
                 </div>
-                <input
-  type="file"
-  accept=".pdf,.doc,.docx"
-  onChange={(e) => setSelectedFile(e.target.files[0])}
-  style={{ marginBottom: "10px" }}
-/>
-<p style={{ fontSize: "14px", color: "#666" }}>
-  {selectedFile
-    ? `Selected File: ${selectedFile.name}`
-    : "No file selected"}
-</p>
+                {assignment.status !== "Submitted" && (
+  <>
+    <input
+      type="file"
+      accept=".pdf,.doc,.docx"
+      onChange={(e) => setSelectedFile(e.target.files[0])}
+      style={{ marginBottom: "10px" }}
+    />
+
+    <p style={{ fontSize: "14px", color: "#666" }}>
+      {selectedFile
+        ? `Selected File: ${selectedFile.name}`
+        : "No file selected"}
+    </p>
+  </>
+)}
 
                 <button
  disabled={assignment.status === "Submitted" || !selectedFile}
