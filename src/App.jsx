@@ -404,7 +404,9 @@ function App() {
           <span className="brand-icon">
             <FaGraduationCap />
           </span>
-          <span>LearnSphere</span>
+          <span className="text-xl font-bold text-blue-600">
+            LearnSphere
+            </span>
         </button>
 
         <button
@@ -438,7 +440,10 @@ function App() {
             {darkMode ? <FaSun /> : <FaMoon />}
           </button>
 
-          <button className="login-button" onClick={() => setShowLogin(true)}>
+          <button
+          className="login-button bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          onClick={() => setShowLogin(true)}
+          >
             <FaUser />
             {loggedIn ? "Satnam" : "Login"}
           </button>
@@ -452,10 +457,10 @@ function App() {
           <section className="hero">
             <div className="hero-content">
               <span className="eyebrow">SMART LEARNING PLATFORM</span>
-              <h1>
+              <h1 className="text-5xl font-bold text-gray-900">
                 Learn new skills and
-                <span> build your future.</span>
-              </h1>
+                <span className="text-blue-600"> build your future.</span>
+</h1>
               <p>
                 Access professional courses, practical video lessons,
                 assignments and real progress tracking from one modern
@@ -892,8 +897,10 @@ function completeLesson() {
   required
 />
             </label>
-
-            <button type="submit" className="modal-primary-button">
+            <button
+            type="submit"
+            className="modal-primary-button bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition"
+>
               Login to LMS
             </button>
           </form>
