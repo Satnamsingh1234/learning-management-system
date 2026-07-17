@@ -855,9 +855,10 @@ Learn new skills and
                   <strong>{courseProgress(course)}%</strong>
                 </div>
 
-                <div className="large-progress-bar">
-                  <div style={{ width: `${courseProgress(course)}%` }} />
-                </div>
+                <div
+  className="progress-fill"
+  style={{ width: `${courseProgress(course)}%` }}
+/>
 
                 <small>
                   {courseProgress(course) === 100
