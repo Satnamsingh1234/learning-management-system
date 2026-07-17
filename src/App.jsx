@@ -335,25 +335,7 @@ const [confirmPassword, setConfirmPassword] = useState("");
       };
   
       setCurrentUser(safeUser);
-      const freshCourses = defaultCourses.map((course) => ({
-        ...course,
-        completedLessons: 0,
-      }));
       
-      const freshAssignments = defaultAssignments.map((assignment) => ({
-        ...assignment,
-        status: "Pending",
-        fileName: undefined,
-        submittedAt: undefined,
-      }));
-      
-      setCourses(freshCourses);
-      setAssignments(freshAssignments);
-      setEnrolledCourses([]);
-      
-      localStorage.setItem("lms-courses", JSON.stringify(freshCourses));
-      localStorage.setItem("lms-assignments", JSON.stringify(freshAssignments));
-      localStorage.setItem("lms-enrolled", JSON.stringify([]));
       localStorage.setItem("lms-current-user", JSON.stringify(safeUser));
   
       setShowLogin(false);
@@ -418,6 +400,25 @@ const [confirmPassword, setConfirmPassword] = useState("");
   
     localStorage.setItem("lms-current-user", JSON.stringify(safeUser));
     setCurrentUser(safeUser);
+    const freshCourses = defaultCourses.map((course) => ({
+      ...course,
+      completedLessons: 0,
+    }));
+    
+    const freshAssignments = defaultAssignments.map((assignment) => ({
+      ...assignment,
+      status: "Pending",
+      fileName: undefined,
+      submittedAt: undefined,
+    }));
+    
+    setCourses(freshCourses);
+    setAssignments(freshAssignments);
+    setEnrolledCourses([]);
+    
+    localStorage.setItem("lms-courses", JSON.stringify(freshCourses));
+    localStorage.setItem("lms-assignments", JSON.stringify(freshAssignments));
+    localStorage.setItem("lms-enrolled", JSON.stringify([]));
   
     setShowLogin(false);
     setFullName("");
