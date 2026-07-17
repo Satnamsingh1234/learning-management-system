@@ -1372,3 +1372,26 @@ footer p {
   height: 100%;
   border: none;
 }
+.video-thumbnail {
+  width: 100%;
+  min-height: 235px;
+  position: relative;
+  border: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.video-thumbnail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.25);
+}
+
+.video-thumbnail .play-button,
+.video-thumbnail small {
+  position: relative;
+  z-index: 1;
+}

@@ -99,6 +99,7 @@ const defaultCourses = [
       course: "React Development",
       duration: "18:24",
       videoUrl: "https://www.youtube.com/embed/SqcY0GlETPk",
+      thumbnail: "https://img.youtube.com/vi/SqcY0GlETPk/hqdefault.jpg",
       description: "Understand reusable components, props and component structure.",
     },
     {
@@ -108,6 +109,7 @@ const defaultCourses = [
       course: "JavaScript Mastery",
       duration: "22:10",
       videoUrl: "https://www.youtube.com/embed/R8rmfD9Y5-c",
+      thumbnail: "https://img.youtube.com/vi/R8rmfD9Y5-c/hqdefault.jpg",
       description: "Practice map, filter, reduce and modern array methods.",
     },
     {
@@ -117,6 +119,7 @@ const defaultCourses = [
       course: "Node.js and Express",
       duration: "26:42",
       videoUrl: "https://www.youtube.com/embed/pKd0Rpw7O48",
+      thumbnail: "https://img.youtube.com/vi/pKd0Rpw7O48/hqdefault.jpg",
       description: "Create routes, controllers and API responses with Express.",
     },
     {
@@ -126,6 +129,7 @@ const defaultCourses = [
       course: "MongoDB Database",
       duration: "19:35",
       videoUrl: "https://www.youtube.com/embed/ofme2o29ngU",
+      thumbnail: "https://img.youtube.com/vi/ofme2o29ngU/hqdefault.jpg",
       description: "Insert, read, update and delete MongoDB documents.",
     },
   ];
@@ -617,14 +621,18 @@ Learn new skills and
             {videoData.map((video, index) => (
               <article className="video-card" key={video.id}>
                 <button
-                  className="video-thumbnail"
-                  onClick={() => setSelectedVideo(video)}
-                >
-                  <span className="play-button">
-                    <FaPlay />
-                  </span>
-                  <small>{video.duration}</small>
-                </button>
+  className="video-thumbnail"
+  onClick={() => setSelectedVideo(video)}
+  style={{
+    backgroundImage: `url(${video.thumbnail})`,
+  }}
+>
+  <span className="play-button">
+    <FaPlay />
+  </span>
+
+  <small>{video.duration}</small>
+</button>
 
                 <div className="video-details">
                   <span>Lesson {index + 1}</span>
