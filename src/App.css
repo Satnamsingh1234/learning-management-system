@@ -802,7 +802,7 @@ footer p {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 3000;
+  z-index:9999;
   padding: 20px;
   display: grid;
   place-items: center;
@@ -1416,7 +1416,8 @@ footer p {
   background: #2563eb;
   color: white;
   border-color: #2563eb;
-}
+} 
+
 
 .auth-switch {
   margin-top: 16px;
@@ -1433,4 +1434,10 @@ footer p {
 
 .auth-switch span:hover {
   text-decoration: underline;
+}
+.toast,
+.notification,
+.success-message {
+  position: fixed;
+  z-index: 99999 !important;
 }
