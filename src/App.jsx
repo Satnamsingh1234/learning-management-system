@@ -458,8 +458,8 @@ function App() {
             <div className="hero-content">
               <span className="eyebrow">SMART LEARNING PLATFORM</span>
               <h1 className="text-5xl font-bold text-gray-900">
-                Learn new skills and
-                <span className="text-blue-600"> build your future.</span>
+Learn new skills and
+  <span className="text-blue-600"> build your future.</span>
 </h1>
               <p>
                 Access professional courses, practical video lessons,
@@ -937,44 +937,213 @@ function completeLesson() {
           </div>
         </div>
       )}
-
       {selectedCourse && (
-        <div className="modal-overlay">
-          <div className="modal course-modal">
-            <button
-              className="close-modal"
-              onClick={() => setSelectedCourse(null)}
-            >
-              <FaTimes />
-            </button>
+  <div className="modal-overlay">
+    <div className="modal course-modal course-details-modal">
+      <button
+        className="close-modal"
+        onClick={() => setSelectedCourse(null)}
+        aria-label="Close course details"
+      >
+        <FaTimes />
+      </button>
 
-            <span className="modal-icon">
-              {getCourseIcon(selectedCourse.icon)}
-            </span>
-            <span className="course-category">{selectedCourse.category}</span>
-            <h2>{selectedCourse.title}</h2>
-            <p>{selectedCourse.description}</p>
+      <div className="course-details-header">
+        <span className="modal-icon">
+          {getCourseIcon(selectedCourse.icon)}
+        </span>
 
-            <div className="modal-course-stats">
-              <span>{selectedCourse.lessons} lessons</span>
-              <span>{selectedCourse.duration}</span>
-              <span>{selectedCourse.level}</span>
+        <div>
+          <span className="course-category">
+            {selectedCourse.category}
+          </span>
+
+          <h2>{selectedCourse.title}</h2>
+
+          <p>{selectedCourse.description}</p>
+        </div>
+      </div>
+
+      <div className="modal-course-stats">
+        <span>
+          <FaBookOpen />
+          <strong>{selectedCourse.lessons}</strong>
+          Lessons
+        </span>
+
+        <span>
+          <FaClock />
+          <strong>{selectedCourse.duration}</strong>
+          Duration
+        </span>
+
+        <span>
+          <FaGraduationCap />
+          <strong>{selectedCourse.level}</strong>
+          Level
+        </span>
+
+        <span>
+          <FaCheckCircle />
+          <strong>{courseProgress(selectedCourse)}%</strong>
+          Completed
+        </span>
+      </div>
+
+      <div className="course-detail-content">
+        <section>
+          <h3>About this course</h3>
+          <p>
+            This course provides a complete introduction to{" "}
+            <strong>{selectedCourse.title}</strong>. Students will learn
+            important concepts through structured lessons, practical
+            examples and interactive activities.
+          </p>
+
+          <p>
+            The course is designed for students who want to improve their
+            technical knowledge and develop practical skills that can be
+            used in academic and real-world projects.
+          </p>
+        </section>
+
+        <section>
+          <h3>What you will learn</h3>
+
+          <ul className="course-learning-list">
+            <li>
+              <FaCheckCircle />
+              Understand the core concepts of {selectedCourse.title}.
+            </li>
+
+            <li>
+              <FaCheckCircle />
+              Apply concepts through practical examples and activities.
+            </li>
+
+            <li>
+              <FaCheckCircle />
+              Build confidence by completing structured lessons.
+            </li>
+
+            <li>
+              <FaCheckCircle />
+              Complete assignments related to the course.
+            </li>
+
+            <li>
+              <FaCheckCircle />
+              Track your learning progress after every lesson.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Course content</h3>
+
+          <div className="course-content-preview">
+            <div>
+              <span>01</span>
+              <p>
+                <strong>Introduction and Fundamentals</strong>
+                Learn the basic concepts and course objectives.
+              </p>
             </div>
 
-            <button
-              className="modal-primary-button"
-              onClick={() => {
-                setSelectedCourse(null);
-                openLearning(selectedCourse.id);
-              }}
-            >
-              {enrolledCourses.includes(selectedCourse.id)
-                ? "Continue Learning"
-                : "Enroll Now"}
-            </button>
+            <div>
+              <span>02</span>
+              <p>
+                <strong>Environment and Setup</strong>
+                Prepare the tools required for practical learning.
+              </p>
+            </div>
+
+            <div>
+              <span>03</span>
+              <p>
+                <strong>Core Concepts in Practice</strong>
+                Understand concepts using practical examples.
+              </p>
+            </div>
+
+            <div>
+              <span>04</span>
+              <p>
+                <strong>Final Project and Review</strong>
+                Apply your knowledge and complete the final activity.
+              </p>
+            </div>
           </div>
+        </section>
+
+        <section>
+          <h3>Course features</h3>
+
+          <div className="course-feature-grid">
+            <div>
+              <FaPlay />
+              <span>Video Lessons</span>
+            </div>
+
+            <div>
+              <FaTasks />
+              <span>Assignments</span>
+            </div>
+
+            <div>
+              <FaLayerGroup />
+              <span>Practical Examples</span>
+            </div>
+
+            <div>
+              <FaGraduationCap />
+              <span>Certificate</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="course-requirements">
+          <h3>Requirements</h3>
+
+          <ul>
+            <li>Basic computer knowledge</li>
+            <li>A laptop or desktop computer</li>
+            <li>Internet connection</li>
+            <li>Interest in learning new technical skills</li>
+          </ul>
+        </section>
+      </div>
+
+      <div className="course-details-footer">
+        <div>
+          <span>Your current progress</span>
+
+          <div className="course-progress">
+            <div
+              style={{
+                width: `${courseProgress(selectedCourse)}%`,
+              }}
+            />
+          </div>
+
+          <strong>{courseProgress(selectedCourse)}% completed</strong>
         </div>
-      )}
+
+        <button
+          className="modal-primary-button"
+          onClick={() => {
+            setSelectedCourse(null);
+            openLearning(selectedCourse.id);
+          }}
+        >
+          {enrolledCourses.includes(selectedCourse.id)
+            ? "Continue Learning"
+            : "Enroll and Start Learning"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {showCertificate && (
         <div className="modal-overlay">
