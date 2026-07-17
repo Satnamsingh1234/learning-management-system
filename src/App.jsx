@@ -194,6 +194,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [learningCourseId, setLearningCourseId] = useState(null);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
@@ -295,9 +296,12 @@ const [confirmPassword, setConfirmPassword] = useState("");
   function submitAssignment(id) {
     setAssignments((current) =>
       current.map((assignment) =>
-        assignment.id === id
-          ? { ...assignment, status: "Submitted" }
-          : assignment
+        assignment.id === id? {
+          ...assignment,
+          status: "Submitted",
+          fileName: selectedFile.name,
+          submittedAt: new Date().toLocaleString(),
+        }          : assignment
       )
     );
     notify("Assignment submitted successfully!");
@@ -782,15 +786,32 @@ Learn new skills and
                     <strong>{assignment.points}</strong>
                   </div>
                 </div>
+                <input
+  type="file"
+  accept=".pdf,.doc,.docx"
+  onChange={(e) => setSelectedFile(e.target.files[0])}
+  style={{ marginBottom: "10px" }}
+/>
+<p style={{ fontSize: "14px", color: "#666" }}>
+  {selectedFile
+    ? `Selected File: ${selectedFile.name}`
+    : "No file selected"}
+</p>
 
                 <button
-                  disabled={assignment.status === "Submitted"}
-                  onClick={() => submitAssignment(assignment.id)}
+ disabled={assignment.status === "Submitted" || !selectedFile}
+                   onClick={() => submitAssignment(assignment.id)}
                 >
                   {assignment.status === "Submitted"
                     ? "Submitted ✓"
                     : "Submit Assignment"}
                 </button>
+                {assignment.fileName && (
+  <div style={{ marginTop: "10px", fontSize: "14px", color: "#555" }}>
+    <p>📄 File: {assignment.fileName}</p>
+    <p>🕒 Submitted: {assignment.submittedAt}</p>
+  </div>
+)}
               </article>
             ))}
           </div>
