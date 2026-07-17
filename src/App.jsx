@@ -91,42 +91,44 @@ const defaultCourses = [
       "Track changes, manage repositories and collaborate with development teams.",
   },
 ];
-
-const videoData = [
-  {
-    id: 1,
-    title: "React Components Explained",
-    courseId: 1,
-    course: "React Development",
-    duration: "18:24",
-    description: "Understand reusable components, props and component structure.",
-  },
-  {
-    id: 2,
-    title: "JavaScript Arrays and Methods",
-    courseId: 2,
-    course: "JavaScript Mastery",
-    duration: "22:10",
-    description: "Practice map, filter, reduce and modern array methods.",
-  },
-  {
-    id: 3,
-    title: "Building Your First REST API",
-    courseId: 3,
-    course: "Node.js and Express",
-    duration: "26:42",
-    description: "Create routes, controllers and API responses with Express.",
-  },
-  {
-    id: 4,
-    title: "MongoDB CRUD Operations",
-    courseId: 4,
-    course: "MongoDB Database",
-    duration: "19:35",
-    description: "Insert, read, update and delete MongoDB documents.",
-  },
-];
-
+  const videoData = [
+    {
+      id: 1,
+      title: "React Components Explained",
+      courseId: 1,
+      course: "React Development",
+      duration: "18:24",
+      videoUrl: "https://www.youtube.com/embed/SqcY0GlETPk",
+      description: "Understand reusable components, props and component structure.",
+    },
+    {
+      id: 2,
+      title: "JavaScript Arrays and Methods",
+      courseId: 2,
+      course: "JavaScript Mastery",
+      duration: "22:10",
+      videoUrl: "https://www.youtube.com/embed/R8rmfD9Y5-c",
+      description: "Practice map, filter, reduce and modern array methods.",
+    },
+    {
+      id: 3,
+      title: "Building Your First REST API",
+      courseId: 3,
+      course: "Node.js and Express",
+      duration: "26:42",
+      videoUrl: "https://www.youtube.com/embed/pKd0Rpw7O48",
+      description: "Create routes, controllers and API responses with Express.",
+    },
+    {
+      id: 4,
+      title: "MongoDB CRUD Operations",
+      courseId: 4,
+      course: "MongoDB Database",
+      duration: "19:35",
+      videoUrl: "https://www.youtube.com/embed/ofme2o29ngU",
+      description: "Insert, read, update and delete MongoDB documents.",
+    },
+  ];
 const defaultAssignments = [
   {
     id: 1,
@@ -916,11 +918,14 @@ function completeLesson() {
             >
               <FaTimes />
             </button>
-
             <div className="video-player">
-              <FaPlay />
-              <span>Demo Video Player</span>
-            </div>
+              <iframe
+    src={selectedVideo.videoUrl}
+    title={selectedVideo.title}
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+</div>
 
             <h2>{selectedVideo.title}</h2>
             <p>{selectedVideo.description}</p>
